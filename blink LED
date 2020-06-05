@@ -1,0 +1,69 @@
+## Toggle an LED when the GUI button is pressed ##
+
+from tkinter import *
+import tkinter.font
+from gpiozero import LED
+import RPi.GPIO
+RPi.GPIO.setmode(RPi.GPIO.BCM)
+
+### HARDWARE DEFINITIONS ###
+led=LED(14)
+led1=LED(15)
+led2=LED(18)
+
+
+
+### GUI DEFINITIONS ###
+win = Tk()
+win.title("LED Toggler")
+myFont = tkinter.font.Font(family = 'Helvetica', size = 12, weight = "bold")
+
+
+### Event Functions ###
+def ledToggle():
+    if led.is_lit:
+        led.off()
+        ledButton["text"]="Turn LED on" 
+    else:
+        led.on()
+        ledButton["text"]="Turn LED off"
+
+def ledToggle1():
+    if led1.is_lit:
+        led1.off()
+        led1Button["text"]="Turn LED on" 
+    else:
+        led1.on()
+        led1Button["text"]="Turn LED off"
+
+def ledToggle2():
+    if led2.is_lit:
+        led2.off()
+        led2Button["text"]="Turn LED on" 
+    else:
+        led2.on()
+        led2Button["text"]="Turn LED off"
+
+def close():
+    RPi.GPIO.cleanup()
+    win.destroy()
+
+
+
+
+ledButton = Button(win, text='Turn LED red', font=myFont, command=ledToggle, bg='bisque2', height=10, width=40)
+ledButton.grid(row=1,column=0)
+
+
+led1Button = Button(win, text='Turn LED blue', font=myFont, command=ledToggle1, bg='bisque2', height=10, width=40)
+led1Button.grid(row=2,column=0)
+
+
+led2Button = Button(win, text='Turn LED green', font=myFont, command=ledToggle2, bg='bisque2', height=10, width=40)
+led2Button.grid(row=3,column=0)
+exitButton = Button(win, text='Exit', font=myFont, command=close, bg='red', height=10, width=40)
+exitButton.grid(row=4, column=0)
+
+win.protocol("WM_DELETE_WINDOW", close) 
+
+win.mainloop() 
